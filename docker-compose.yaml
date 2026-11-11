@@ -11,6 +11,28 @@ services:
       - ./postgres-keycloak-data:/var/lib/postgresql/data
     ports:
       - "5433:5432"
+  crm_db:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: crm_db
+      POSTGRES_USER: crm_user
+      POSTGRES_PASSWORD: crm_password
+    volumes:
+      - ./db_crm/postgres-crm-data:/var/lib/postgresql/data
+      - ./db_crm/init:/docker-entrypoint-initdb.d:ro      
+    ports:
+      - "5434:5432"
+  telemetry_db:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: telemetry_db
+      POSTGRES_USER: telemetry_user
+      POSTGRES_PASSWORD: telemetry_password
+    volumes:
+      - ./db_telemetry/postgres-telemetry-data:/var/lib/postgresql/data
+      - ./db_telemetry/init:/docker-entrypoint-initdb.d:ro      
+    ports:
+      - "5435:5432"
   keycloak:
     image: quay.io/keycloak/keycloak:21.1
     environment:
