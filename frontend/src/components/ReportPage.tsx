@@ -22,6 +22,23 @@ const ReportPage: React.FC = () => {
         }
       });
 
+
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      const blob = new Blob([JSON.stringify(data, null, 2)], {
+        type: 'application/json;charset=utf-8'
+      });
+
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'report.json';
+      link.click();
+      URL.revokeObjectURL(url);
+
       
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
